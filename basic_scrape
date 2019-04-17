@@ -1,0 +1,24 @@
+## Basic us data grab
+###' Using the example here of the Premier League 2018/19 game list (with xG data)
+###' But in general, a similar coding structure can be applied to scrape other content nested in web JavaScript.
+
+library(rvest)
+library(V8)
+library(tidyverse)
+library(stringi)
+
+us <- read_html("https://understat.com/league/EPL/2018") # select the understat URL to be scraped
+
+ctx <- v8() # create a javascript V8 environment to extract the JS script content through
+
+us %>% 
+  html_nodes(xpath="/html/body/div[1]/div[3]/div[2]/div/script") %>% # selecting the html node using the xpath that contains the Premier League game list
+  html_text() %>% # extracting as text
+  stri_split_lines() %>% # splitting the script to isolate the game list content
+  flatten_chr() %>% # collapse the nested list
+  keep(stri_detect_regex, "^\tvar") %>% # keep the string with our 'var' (variable) data
+  stri_sub(.,1,-2) %>% # removing the last character (a comma, which messes things up)
+  ctx$eval() # passing to our V8 environment for evaluation %>% 
+  
+us_gamelist <- ctx$get("datesData") %>% # go 'get' our data
+  data.frame() # convert to data.frame format
