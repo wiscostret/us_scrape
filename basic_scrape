@@ -18,7 +18,7 @@ us %>%
   flatten_chr() %>% # collapse the nested list
   keep(stri_detect_regex, "^\tvar") %>% # keep the string with our 'var' (variable) data
   stri_sub(.,1,-2) %>% # removing the last character (a comma, which messes things up)
-  ctx$eval() # passing to our V8 environment for evaluation %>% 
+  ctx$eval() # passing to our V8 environment for evaluation
   
 us_gamelist <- ctx$get("datesData") %>% # go 'get' our data
   data.frame() # convert to data.frame format
