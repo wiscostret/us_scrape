@@ -1,7 +1,7 @@
 ## Basic us data grab
 ###' Using the example here of the Premier League 2018/19 game list (with xG data)
 ###' But in general, a similar coding structure can be applied to scrape other content nested in web JavaScript.
-###' Inspiration from [boB Rudis](https://github.com/hrbrmstr)
+###' Inspiration from boB Rudis (https://github.com/hrbrmstr)
 
 library(rvest)
 library(V8)
